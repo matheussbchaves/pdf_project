@@ -1,24 +1,33 @@
-import PyPDF2
+import fitz
+import os
 
-# abrir o arquivo pdf
-with open("C:\\Users\\mathe\\Downloads\\TrabalhoFinal.pdf", 'rb') as pdf_file:
-    # criar um objeto pdf reader
-    pdf_reader = PyPDF2.PdfReader(pdf_file)
+def texto_pdf(arquivo):
+    '''Retorna o texto do arquivo PDF(espero)'''
     
-    # pegar o numero de páginas no pdf
-    num_pages = len(pdf_reader.pages)
+    doc = fitz.open(arquivo)
+    pag = doc[0]
+    texto = pag.get_text()
+    linhas = texto.split('\n')
     
-    # iterar sobre as páginas
-    for i in range(len(pdf_reader.pages)):
-        # pegar a página atual
-        page = pdf_reader.pages[i]
-        
-        # extrair o texto da página
-        text = page.extract_text()
-        
-        # imprimir o texto extraído
-        print(text)
+    return linhas[0]
 
-# fechar o arquivo pdf
-pdf_file.close()     
+def get_arquivo(path, ext = '.pdf'):
+    '''Retorna uma lista com o caminho dos arquivos com a extensão especificada.'''
 
+    lista_arq = []
+    for file in os.listdir(path):
+        if file.endswith(ext):
+            lista_arq.append(os.path.join(path, file))
+
+    return lista_arq
+
+
+
+
+
+if __name__ == '__main__':
+    arq = "caminho\\para\\arquivo."
+
+    path = "caminho\\para\\pasta"
+    
+    print(get_arquivo(path))
