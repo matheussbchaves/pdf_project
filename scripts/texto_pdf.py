@@ -3,7 +3,7 @@ import os
 import pandas as pd
 
 def texto_pdf(arquivo):
-    '''Retorna o texto do arquivo PDF(espero)'''
+    '''Retorna o texto do arquivo PDF.'''
     
     doc = fitz.open(arquivo)
     pag = doc[0]
@@ -11,9 +11,22 @@ def texto_pdf(arquivo):
     linhas = texto.split('\n')
     doc.close()
 
-    # arrumar para extrair apenas o texto desejado
+    output = {
+            'Checkdate': linhas[83],
+            'Name of User': linhas[84],
+            'Department': linhas[85],
+            'User-Id': linhas[86],
+            'Order': linhas[87:88],
+            'AWV': linhas[89],
+            'Order Recipient (Seller)': linhas[41],
+            'Customer(Buyer)': linhas[45],
+            'Recipient of Goods/Service': linhas[49],
+            'Ultimate End-User': linhas[53],
+            'Sender / Suplier': linhas[57]
+            }
+     
 
-    return linhas[0] 
+    return output
 
 def get_arquivo(path, ext = '.pdf'):
     '''Retorna uma lista com o caminho dos arquivos com a extensão especificada.'''
@@ -25,13 +38,25 @@ def get_arquivo(path, ext = '.pdf'):
 
     return lista_arq
 
+def att_excel(info):
+    '''Atualiza a planilha de controle.'''
+    #se doc já estiver na planilha, fazer nada
+    #se não, atualizar planilha
 
 
 if __name__ == '__main__':
 
-    arq = "caminho\\para\\arquivo."
-    path = "caminho\\para\\pasta"
-    xl = "caminho\\para\\planilha.xlsm"
+    arq = "arquivo.pdf"
+    path = "diretório"
+    xl = "planilha.xlsm"
+    
+
+    info = pd.DataFrame(texto_pdf(arq))
+
+    print(info)
+
+    print(get_arquivo(path))
+
     
     if os.path.exists(xl):
         arquivos = get_arquivo(path)
